@@ -3,23 +3,79 @@
 	{
 		"selected_items":
 		[
+			[
+				"Stude",
+				"StudentResource"
+			],
+			[
+				"Intege",
+				"InetegerField"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "log/models.py",
+			"settings":
+			{
+				"buffer_size": 1477,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "student_log/urls.py",
+			"settings":
+			{
+				"buffer_size": 205,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "log/admin.py",
+			"settings":
+			{
+				"buffer_size": 126,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "student_log/settings.py",
+			"settings":
+			{
+				"buffer_size": 5352,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "log/views.py",
+			"settings":
+			{
+				"buffer_size": 396,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 47.0,
 		"selected_items":
 		[
 			[
-				"INSTALL",
+				"install",
 				"Package Control: Install Package"
 			],
 			[
 				"packa",
+				"Package Control: Disable Package"
+			],
+			[
+				"",
+				"Package Control: List Packages"
+			],
+			[
+				"INSTALL",
 				"Package Control: Install Package"
 			]
 		],
@@ -40,15 +96,20 @@
 	},
 	"file_history":
 	[
+		"/Users/Justin/student_log/log/__init__.py",
+		"/Users/Justin/student_log/student_log/settings.py",
+		"/Users/Justin/student_log/.gitignore",
+		"/Users/Justin/student_log/student_log/wsgi.py",
+		"/Users/Justin/student_log/.codeintel/config",
 		"/Users/Justin/student_log/log/models.py"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 		]
@@ -58,6 +119,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"required=True",
+			"model."
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -65,6 +128,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"null=True",
+			"models."
 		],
 		"reverse": false,
 		"show_context": true,
@@ -75,8 +140,141 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "log/models.py",
+					"settings":
+					{
+						"buffer_size": 1477,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								504,
+								504
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "student_log/urls.py",
+					"settings":
+					{
+						"buffer_size": 205,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								178,
+								178
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "log/admin.py",
+					"settings":
+					{
+						"buffer_size": 126,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								121,
+								121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "student_log/settings.py",
+					"settings":
+					{
+						"buffer_size": 5352,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4482,
+								4482
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1291.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "log/views.py",
+					"settings":
+					{
+						"buffer_size": 396,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								333
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -113,7 +311,7 @@
 	"menu_visible": true,
 	"replace":
 	{
-		"height": 0.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
