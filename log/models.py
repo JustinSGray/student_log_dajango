@@ -12,16 +12,22 @@ class Student(models.Model):
     DOB = models.DateField()
     grade = models.IntegerField()
     phone_number = models.CharField(max_length=20)
-    r_score_in = models.IntegerField()
-    w_score_in = models.IntegerField()
-    r_score_out = models.IntegerField()    
-    w_score_out = models.IntegerField()
-    notes = models.TextField()
+    r_score_in = models.IntegerField(blank=True,null=True)
+    w_score_in = models.IntegerField(blank=True,null=True)
+    r_score_out = models.IntegerField(blank=True,null=True)    
+    w_score_out = models.IntegerField(blank=True,null=True)
+    notes = models.TextField(blank=True,null=True)
 
 class Klass(models.Model):
+    class Meta:
+        verbose_name = 'Class'
+        verbose_name_plural = 'Classes'
+
     name = models.CharField(max_length=20)
     active = models.BooleanField(default=False)
     date = models.DateField()   
+
+    students = models.ManyToManyField('Student', related_name="classes",blank=True,null=True)
 
 class Proctor(models.Model):
     q1 = models.BooleanField(default=False)
