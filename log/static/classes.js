@@ -20,28 +20,38 @@ Classes = Backbone.Collection.extend({
 
 ClassView = Backbone.View.extend({
 	tagName: "tr",
-	row_template: Handlebars.compile('<td>{{name}}</td><td>{{date}}</td>'),
+	row_template: Handlebars.compile('<td><a href="">{{name}}</a></td><td>{{date}}</td>'+
+		'<td><a class="btn del_btn"><i class="icon-trash"></i></a></td>'),
+	events: {
+		'click .del_btn':'clear'
+	},
+	initialize: function(){
+		this.model.on('destroy',this.remove,this);
+	},
 	render:function(){
-		//console.log(this.model.toJSON());
 		var row = this.row_template(this.model.toJSON());
 		this.$el.empty();
 		this.$el.html(row);
 		return this;
 	},
+	clear:function(){
+		this.off();
+		this.model.destroy();
+	},
+
 });
 
 ClassesView = Backbone.View.extend({
 	tagName:"table",
-	className:"table table-striped table-bordered",
-
+	className:"table table-striped table-bordered table-condensed",
 	initialize: function(){
 		this.collection = new Classes([new Class(), new Class(), new Class()])
 		this.render();
 	},
 	render: function(){
         var self = this;
+        self.$el.append('<thead><tr><th>Name</th><th>Date</th><th style="width:40px;"></th></tr><thead>')
         _(self.collection.models).each(function(klass){
-        	console.log(klass);
         	var cv = new ClassView({'model':klass});
         	self.$el.append(cv.render().el);
         });
@@ -52,5 +62,8 @@ ClassesView = Backbone.View.extend({
 //////////////////////
 // Main App
 //////////////////////
-var classes_view = new ClassesView;
-$('#active_classes').append(classes_view.el)
+var active_classes = new ClassesView;
+var inactive_classes = new ClassesView;
+
+$('#active_classes').append(active_classes.el)
+$('#inactive_classes').append(inactive_classes.el)
