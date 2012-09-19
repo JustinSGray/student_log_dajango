@@ -27,23 +27,7 @@
 			"file": "student_log/urls.py",
 			"settings":
 			{
-				"buffer_size": 205,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "log/admin.py",
-			"settings":
-			{
-				"buffer_size": 126,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "student_log/settings.py",
-			"settings":
-			{
-				"buffer_size": 5352,
+				"buffer_size": 305,
 				"line_ending": "Unix"
 			}
 		},
@@ -51,7 +35,23 @@
 			"file": "log/views.py",
 			"settings":
 			{
-				"buffer_size": 396,
+				"buffer_size": 602,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "log/templates/log/class.html",
+			"settings":
+			{
+				"buffer_size": 398,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "log/static/classes.js",
+			"settings":
+			{
+				"buffer_size": 1891,
 				"line_ending": "Unix"
 			}
 		}
@@ -59,9 +59,17 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 47.0,
+		"height": 387.0,
 		"selected_items":
 		[
+			[
+				"pac",
+				"Package Control: Disable Package"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -79,7 +87,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 449.0
+		"width": 602.0
 	},
 	"console":
 	{
@@ -96,8 +104,13 @@
 	},
 	"file_history":
 	[
-		"/Users/Justin/student_log/log/__init__.py",
 		"/Users/Justin/student_log/student_log/settings.py",
+		"/Users/Justin/student_log/log/templates/log/base.html",
+		"/Users/Justin/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/Justin/paddockdev/paddock/templates/paddock/base.html",
+		"/Users/Justin/student_log/log/templates/log/class.html",
+		"/Users/Justin/student_log/log/admin.py",
+		"/Users/Justin/student_log/log/__init__.py",
 		"/Users/Justin/student_log/.gitignore",
 		"/Users/Justin/student_log/student_log/wsgi.py",
 		"/Users/Justin/student_log/.codeintel/config",
@@ -109,7 +122,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 		]
@@ -119,6 +132,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"test",
+			"static",
 			"required=True",
 			"model."
 		],
@@ -140,7 +155,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -161,7 +176,9 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -174,15 +191,15 @@
 					"file": "student_log/urls.py",
 					"settings":
 					{
-						"buffer_size": 205,
+						"buffer_size": 305,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								178,
-								178
+								260,
+								260
 							]
 						],
 						"settings":
@@ -197,18 +214,18 @@
 				},
 				{
 					"buffer": 2,
-					"file": "log/admin.py",
+					"file": "log/views.py",
 					"settings":
 					{
-						"buffer_size": 126,
+						"buffer_size": 602,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								121,
-								121
+								601,
+								601
 							]
 						],
 						"settings":
@@ -223,51 +240,51 @@
 				},
 				{
 					"buffer": 3,
-					"file": "student_log/settings.py",
+					"file": "log/templates/log/class.html",
 					"settings":
 					{
-						"buffer_size": 5352,
+						"buffer_size": 398,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4482,
-								4482
+								335,
+								335
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
+							"syntax": "Packages/Djaneiro/Syntaxes/HTML (Django).tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1291.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "log/views.py",
+					"file": "log/static/classes.js",
 					"settings":
 					{
-						"buffer_size": 396,
+						"buffer_size": 1891,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								395,
-								333
+								1070,
+								1070
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -319,6 +336,18 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"base",
+				"log/templates/log/base.html"
+			],
+			[
+				"class",
+				"log/templates/log/class.html"
+			],
+			[
+				"base.html",
+				"log/templates/log/base.html"
+			]
 		],
 		"width": 0.0
 	},

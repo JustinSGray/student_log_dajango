@@ -48,6 +48,7 @@ ClassesView = Backbone.View.extend({
 		this.collection = new Classes([new Class(), new Class(), new Class()])
 		this.render();
 	},
+	active: false,
 	render: function(){
         var self = this;
         self.$el.append('<thead><tr><th>Name</th><th>Date</th><th style="width:40px;"></th></tr><thead>')
@@ -55,6 +56,8 @@ ClassesView = Backbone.View.extend({
         	var cv = new ClassView({'model':klass});
         	self.$el.append(cv.render().el);
         });
+        self.$el.append('<tr><td colspan="2"><input type="text" name="class_name" style="width:80%;" placeholder="Class Name"></td>'+
+        	'<td><a class="btn add_btn"><i class="icon-plus"></i></a></td></tr>');
         return self
 	},
 });
@@ -62,7 +65,7 @@ ClassesView = Backbone.View.extend({
 //////////////////////
 // Main App
 //////////////////////
-var active_classes = new ClassesView;
+var active_classes = new ClassesView({attributes:{'active':true}});
 var inactive_classes = new ClassesView;
 
 $('#active_classes').append(active_classes.el)
