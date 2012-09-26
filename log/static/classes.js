@@ -21,10 +21,11 @@ Classes = Backbone.Collection.extend({
 ClassView = Backbone.View.extend({
     tagName: "tr",
     row_template: Handlebars.compile('<td><a href="">{{name}}</a></td><td>{{date}}</td>'+
-        '<td><a class="btn deact_btn"><i class="icon-off"></i></a>'+
+        '<td><a class="btn active_btn"><i class="icon-off"></i></a>'+
         '<a class="btn del_btn"><i class="icon-trash"></i></a></td>'),
     events: {
-        'click .del_btn':'clear'
+        'click .del_btn':'clear',
+        'click .active_btn':'toggle',
     },
     initialize: function(){
         this.model.on('destroy',this.remove,this);
@@ -39,6 +40,9 @@ ClassView = Backbone.View.extend({
         this.off();
         this.model.destroy();
     },
+    toggle:function(){
+        this.model.set({active:!this.model.get('active')});
+    }
 
 });
 

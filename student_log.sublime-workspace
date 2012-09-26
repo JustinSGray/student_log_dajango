@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"Classe",
+				"ClassesView"
+			],
+			[
 				"Stude",
 				"StudentResource"
 			],
@@ -16,14 +20,6 @@
 	"buffers":
 	[
 		{
-			"file": "log/models.py",
-			"settings":
-			{
-				"buffer_size": 1477,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "student_log/urls.py",
 			"settings":
 			{
@@ -32,18 +28,18 @@
 			}
 		},
 		{
-			"file": "log/views.py",
+			"file": "log/static/log/classes.html",
 			"settings":
 			{
-				"buffer_size": 602,
+				"buffer_size": 3303,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "log/templates/log/class.html",
+			"file": "log/templates/log/base.html",
 			"settings":
 			{
-				"buffer_size": 398,
+				"buffer_size": 2528,
 				"line_ending": "Unix"
 			}
 		},
@@ -51,7 +47,15 @@
 			"file": "log/static/classes.js",
 			"settings":
 			{
-				"buffer_size": 1891,
+				"buffer_size": 2801,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/jsgray/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 150,
 				"line_ending": "Unix"
 			}
 		}
@@ -104,6 +108,11 @@
 	},
 	"file_history":
 	[
+		"/Users/jsgray/web_development/student_log_dajango/log/templates/log/class.html",
+		"/Users/jsgray/web_development/student_log_dajango/log/views.py",
+		"/Users/jsgray/web_development/student_log_dajango/log/static/classes.js",
+		"/Users/jsgray/web_development/student_log_dajango/student_log/urls.py",
+		"/Users/jsgray/web_development/student_log_dajango/log/models.py",
 		"/Users/Justin/student_log/student_log/settings.py",
 		"/Users/Justin/student_log/log/templates/log/base.html",
 		"/Users/Justin/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
@@ -132,6 +141,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"	",
 			"test",
 			"static",
 			"required=True",
@@ -143,6 +153,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"    ",
+			"	",
 			"null=True",
 			"models."
 		],
@@ -155,39 +167,11 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "log/models.py",
-					"settings":
-					{
-						"buffer_size": 1477,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								504,
-								504
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "student_log/urls.py",
 					"settings":
 					{
@@ -198,13 +182,13 @@
 						"selection":
 						[
 							[
-								260,
-								260
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -213,51 +197,25 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "log/views.py",
+					"buffer": 1,
+					"file": "log/static/log/classes.html",
 					"settings":
 					{
-						"buffer_size": 602,
+						"buffer_size": 3303,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								601,
-								601
+								395,
+								395
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "log/templates/log/class.html",
-					"settings":
-					{
-						"buffer_size": 398,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								335,
-								335
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Djaneiro/Syntaxes/HTML (Django).tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -267,24 +225,78 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "log/static/classes.js",
+					"buffer": 2,
+					"file": "log/templates/log/base.html",
 					"settings":
 					{
-						"buffer_size": 1891,
+						"buffer_size": 2528,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1070,
-								1070
+								2179,
+								2179
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/HTML (Django).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 743.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "log/static/classes.js",
+					"settings":
+					{
+						"buffer_size": 2801,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1359,
+								1359
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 542.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/jsgray/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 150,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22,
+								24
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
