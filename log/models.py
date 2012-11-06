@@ -27,11 +27,13 @@ class Klass(models.Model):
     active = models.BooleanField(default=False)
     date = models.DateField()   
 
-    students = models.ManyToManyField('Student', related_name="classes",blank=True,null=True)
+    students = models.ManyToManyField('Student', related_name="classes", through='KlassStudent',blank=True,null=True)
 
-class Proctor(models.Model):
+class KlassStudent(models.Model):
     q1 = models.BooleanField(default=False)
     q2 = models.BooleanField(default=False)
+    teacher  = models.CharField(max_length=10)
+    status = models.CharField(max_length=10)
 
     student = models.ForeignKey('Student')
     klass = models.ForeignKey('Klass')     
