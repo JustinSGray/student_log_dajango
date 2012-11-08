@@ -4,18 +4,18 @@ from django.db import models
 
 
 class Student(models.Model):
+    sep_id = models.IntegerField()
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dec = models.BooleanField(default=False)
-    parent_name = models.CharField(max_length=60)
-    parent_email = models.EmailField(max_length=254)
-    DOB = models.DateField()
+    parents_name = models.CharField(max_length=60)
+    parents_email = models.EmailField(max_length=254)
     grade = models.IntegerField()
-    phone_number = models.CharField(max_length=20)
-    r_score_in = models.IntegerField(blank=True,null=True)
-    w_score_in = models.IntegerField(blank=True,null=True)
-    r_score_out = models.IntegerField(blank=True,null=True)    
-    w_score_out = models.IntegerField(blank=True,null=True)
+    phone = models.CharField(max_length=20)
+    r_score_in = models.CharField(max_length=6,blank=True,null=True)
+    w_score_in = models.CharField(max_length=6,blank=True,null=True)
+    r_score_out = models.CharField(max_length=6,blank=True,null=True)    
+    w_score_out = models.CharField(max_length=6,blank=True,null=True)
     notes = models.TextField(blank=True,null=True)
 
 class Klass(models.Model):
@@ -42,5 +42,4 @@ class Record(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     notes = models.TextField()
 
-    student = models.ForeignKey('Student')
-    klass = models.ForeignKey('Klass') 
+    klass_student = models.ForeignKey('KlassStudent')

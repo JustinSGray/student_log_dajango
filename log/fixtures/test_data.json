@@ -3,9 +3,8 @@
     "pk":1,
     "fields":{
         "name":"Class 1",
-        "date":"01/11/2012",
-        "active":true,
-        "students":[1,2,3]
+        "date":"2012-11-01",
+        "active":true
     }
 },
 {
@@ -13,9 +12,8 @@
     "pk":2,
     "fields":{
         "name":"Class 2",
-        "date":"02/11/2012",
-        "active":true,
-        "students":[1,2]
+        "date":"2012-11-02",
+        "active":true
     }
 },
 {
@@ -23,10 +21,102 @@
     "pk":3,
     "fields":{
         "name":"Class 3",
-        "date":"01/9/2012",
-        "active":false,
-        "students":[]
+        "date":"2012-09-01",
+        "active":false
     }
 },
+{
+    "model":"log.KlassStudent",
+    "pk":1,
+    "fields":{
+        "q1":true,
+        "q2":false,
+        "teacher":"GenEd",
+        "status":"enr",
+        "student":1,
+        "klass":1
+
+    }    
+},
+{
+    "model":"log.Student",
+    "pk":1,
+    "fields":{
+        "first_name":"Justin",
+        "last_name":"Gray",
+        "sep_id":10001,
+        "dec":true,
+         "parents_name":"Scott Gray",
+         "grade":11,
+         "phone":"216-773-0000",
+         "r_score_in":400,
+         "w_score_in":0,
+         "r_score_out":"FE200",
+         "w_score_out":0,
+         "notes":"xxxx"
+    }    
+},
+{
+    "model":"log.Student",
+    "pk":2,
+    "fields":{
+        "first_name":"Sirius",
+        "last_name":"Gray",
+        "sep_id":10001,
+        "dec":true,
+         "parents_name":"Sharon Gray",
+         "grade":11,
+         "phone":"216-773-1111",
+         "r_score_in":0,
+         "w_score_in":0,
+         "r_score_out":250,
+         "w_score_out":0,
+         "notes":"yyyy"
+    }    
+},
+{
+    "model":"log.Student",
+    "pk":3,
+    "fields":{
+        "first_name":"Eli",
+        "last_name":"Gray",
+        "sep_id":10001,
+        "dec":true,
+         "parents_name":"Justin Gray",
+         "grade":11,
+         "phone":"216-773-2222",
+         "r_score_in":400,
+         "w_score_in":400,
+         "r_score_out":"FE200",
+         "w_score_out":100,
+         "notes":"zzzz"
+    }    
+},
+{
+    "model":"log.KlassStudent",
+    "pk":2,
+    "fields":{
+        "q1":false,
+        "q2":false,
+        "teacher":"DEC",
+        "status":"adm",
+        "student":2,
+        "klass":1
+
+    }    
+},
+{
+    "model":"log.KlassStudent",
+    "pk":3,
+    "fields":{
+        "q1":false,
+        "q2":true,
+        "teacher":"Lift",
+        "status":"adm",
+        "student":3,
+        "klass":1
+
+    }    
+}
 ]
 
