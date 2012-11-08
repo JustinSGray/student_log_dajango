@@ -2,7 +2,7 @@ from django.utils import unittest
 
 from django.test.client import Client
 
-class StudentTest(unittest.TestCase):
+class ClassTest(unittest.TestCase):
     
     def test_get(self):
         pass

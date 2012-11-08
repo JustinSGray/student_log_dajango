@@ -1,0 +1,32 @@
+[{
+    "model":"log.Klass",
+    "pk":1,
+    "fields":{
+        "name":"Class 1",
+        "date":"01/11/2012",
+        "active":true,
+        "students":[1,2,3]
+    }
+},
+{
+    "model":"log.Klass",
+    "pk":2,
+    "fields":{
+        "name":"Class 2",
+        "date":"02/11/2012",
+        "active":true,
+        "students":[1,2]
+    }
+},
+{
+    "model":"log.Klass",
+    "pk":3,
+    "fields":{
+        "name":"Class 3",
+        "date":"01/9/2012",
+        "active":false,
+        "students":[]
+    }
+},
+]
+
