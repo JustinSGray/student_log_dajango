@@ -27,7 +27,7 @@ class Klass(models.Model):
     active = models.BooleanField(default=False)
     date = models.DateField()   
 
-    students = models.ManyToManyField('Student', related_name="classes", through='KlassStudent',blank=True,null=True)
+    students = models.ManyToManyField('Student', related_name="klasses", through='KlassStudent',blank=True,null=True)
 
 class KlassStudent(models.Model):
     q1 = models.BooleanField(default=False)
