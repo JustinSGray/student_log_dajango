@@ -36,10 +36,11 @@ class KlassStudent(models.Model):
     status = models.CharField(max_length=10)
 
     student = models.ForeignKey('Student')
-    klass = models.ForeignKey('Klass')     
+    klass = models.ForeignKey('Klass')    
+
+    records = models.ManyToManyField("Record", related_name="klass_students")
 
 class Record(models.Model): 
     timestamp = models.DateTimeField(auto_now=True)
     notes = models.TextField()
 
-    klass_student = models.ForeignKey('KlassStudent')

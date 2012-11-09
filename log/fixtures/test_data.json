@@ -101,7 +101,8 @@
         "teacher":"DEC",
         "status":"adm",
         "student":2,
-        "klass":1
+        "klass":1,
+        "records":[1,2]
 
     }    
 },
@@ -117,6 +118,22 @@
         "klass":1
 
     }    
+},
+{
+    "model":"log.Record",
+    "pk":1,
+    "fields":{
+        "timestamp":"2012-11-01",
+        "notes":"testing, testing"
+        }
+},
+{
+    "model":"log.Record",
+    "pk":2,
+    "fields":{
+        "timestamp":"2012-10-20",
+        "notes":"check, check"
+        }
 }
 ]
 
