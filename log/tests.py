@@ -4,6 +4,8 @@ from django.test.client import Client
 
 from tastypie.test import ResourceTestCase
 
+from log.models import Klass
+
 
 class ClassTest(ResourceTestCase):
     fixtures = ["test_data.json",]
@@ -17,24 +19,35 @@ class ClassTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         data = self.deserialize(resp)
+
         self.assertEqual(data['meta']['total_count'],3)
+
+        self.assertEqual(set(data['objects'][0].keys()),
+            set(["active","id","name","date","resource_uri","students"]))
 
         print self.q+"1/"
         resp = self.api_client.get(self.q+"1/", format="json")
         data = self.deserialize(resp)
         
-        self.assertEqual(data,{
-            "active":True,
-            "id":"1",
-            "name":"Class 1",
-            "date":"2012-11-01",
-            "resource_uri":"/api/v1/classes/1/",
-            "students":['api/v1/students/1',
-            'api/v1/students/2',]
-            })
+        self.assertEqual(set(data.keys()),set([
+            "active",
+            "id",
+            "name",
+            "date",
+            "resource_uri",
+            "students",
+            ]))
 
     def test_post(self):
-        pass
+        resp = self.api_client.post(self.q,data={
+            "active":True,
+            "name":"Test Class",
+            "date":"2011-05-22",
+            })
+
+        self.assertHttpCreated(resp)
+        self.assertEqual(Klass.objects.count(),4)
+
 
     def test_put(self):
         pass

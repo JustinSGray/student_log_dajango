@@ -23,7 +23,12 @@ class KlassResource(ModelResource):
 
     students =  fields.ToManyField("log.views.StudentResource",
         attribute="students",
-        related_name="klasses",full=True,blank=True,null=True)
+        related_name="klasses",full=True,
+        blank=True,null=True)
+    
+    #block the definition of students during put and post
+    def save_m2m(self,bundle): 
+        pass
 
 v1_api = Api(api_name='v1')
 v1_api.register(StudentResource())
