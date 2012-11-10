@@ -62,6 +62,9 @@ class ClassTest(ResourceTestCase):
         self.assertEqual(Klass.objects.count(),3)
         resp = self.api_client.delete(self.detail_url,format="json")
         self.assertEqual(Klass.objects.count(),2)
+        self.assertEqual(Student.objects.count(),3) #don't remove students
+        self.assertEqual(Interaction.objects.count(),0) #cascade to the interactions
+        self.assertEqual(Record.objects.count(),0) #cascade any orphan records
 
 
 class InteractionTest(ResourceTestCase):         
