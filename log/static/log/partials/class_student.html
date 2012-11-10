@@ -1,0 +1,85 @@
+<div class="row"><div class="span12">
+    <h1><a ng-href="#/classes/{{klass.id}}">{{klass.name}}</a> : {{student.first_name}} {{student.last_name}}</h1>
+</div></div>
+
+<div class="row">
+    <div class="span12">
+        <table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th ng-repeat="col in header_map">{{col.value}}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                <td ng-repeat="col in header_map"
+                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(student[col.key]>=400||student[col.key].indexOf('FE')>=0)}">
+                            {{student[col.key]}}
+                </td> 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="span6">
+        <h3>Student Notes</h3>
+        <textarea ng-model="student.notes" rows="5" class="span5"></textarea>
+    </div>
+    <div class="span6">
+        <h3>Other Info</h3>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputStatus">Status</label>
+                <div class="controls">
+                    <select class="input-mini" ng-model="klass_data.status"
+                      ng-options="o.key as o.short_name for o in status_map">
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Teacher</label>
+                <div class="controls">
+                    <select class="input-small" ng-model="klass_data.teacher"
+                    ng-options="key for key in teacher_types">
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Proctoring</label>
+                <div class="controls">
+                    <input type="checkbox" ng-model="klass_data.p1"> P1 |
+                    <input type="checkbox" ng-model="klass_data.p2"> P2
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <h3>Add a Note</h3>
+        <form class="form-horizontal">
+        <textarea rows="5" class="span5" ng-model="new_note"></textarea>
+        <button type="submit" class="btn" ng-click="add_note(new_note)">Record</button>
+        </form>
+    </div>  
+</div> 
+
+<div class="row">
+    <div class="span12">
+        <table class="table table-bordered table-stripped">
+            <thead>
+              <tr><th>Class</th><th>Date</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="note in klass_data.notes">
+                <td>{{note.class.name}}</td>
+                <td>{{note.date_time | date:'MM/dd/yyyy' }}</td>
+                <td>{{note.note}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

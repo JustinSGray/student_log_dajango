@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="span12">
+        <h1> {{klass.name}}</h1>
+        <hr>
+    </div>
+</div>        
+
+<div class="row">
+    <div class="span5">
+        <form>
+            <legend>Load Roster</legend>   
+            <input type="file"> <input type="submit" class="btn">
+        </form> 
+        
+        
+        <form>
+            <legend>Add note to all checked students</legend>
+            <textarea rows="5" cols="200" ng-model="multinote"> </textarea>
+            <input type="submit" class="btn">
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <h2> Students </h2>
+        <tabs>
+            <pane ng-repeat="status in status_map" title={{status.long_name}}>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                      <tr>
+                        <th> Msg </th>
+                        <th ng-repeat="col in header_map">{{col.value}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="student in klass.students | filter:{'status':status.short_name}"
+                      ng-class="teacher_classes[student.teacher]">
+                      
+                        <td> 
+                            <input type="checkbox" ng-model="student.send_msg">
+                        </td>
+                        <td ng-repeat="col in header_map"
+                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(student[col.key]>=400||student[col.key].indexOf('FE')>=0)}">
+                            <ng-switch on="col.key"> 
+                                <span ng-switch-when="dec">
+                                    <input type="checkbox" ng-model="student.dec">
+                                </span> 
+                                <span ng-switch-when="p1">
+                                    <input type="checkbox" ng-model="student.p1">
+                                </span> 
+                                <span ng-switch-when="p2">
+                                    <input type="checkbox" ng-model="student.p2">
+                                </span>      
+                                <span ng-switch-when="status">
+                                    <select class="span1" ng-model="student.status"
+                                    ng-options="o.key as o.short_name for o in status_map">
+                                    </select>
+                                </span>
+                                <span ng-switch-when="teacher">
+                                    <select class="input-small" ng-model="student.teacher"
+                                    ng-options="key for key in teacher_types">
+                                    </select>
+                                </span>
+                                <span ng-switch-default>
+                                    <a ng-href="index.html#/classes/{{klass.id}}/students/{{student.id}}">{{student[col.key]}}</a>
+                                </span>    
+                            </ng-switch>    
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </pane>
+        </tabs>
+    </div>
+</div>      

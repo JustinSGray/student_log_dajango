@@ -1,0 +1,13 @@
+{
+    "id":2,
+    "name":"Class 2",
+    "date":"01/11/2011",
+    "students":[
+        {"first_name":"Justin","last_name":"Gray","sep_id":10001,"dec":true,"p1":true,"p2":false,"Teacher":"GenEd",
+         "status":"ENR","parents_name":"Scott Gray","grade":11,"phone":"216-773-0000",
+         "r_in":0,"w_in":0,"r_out":0,"w_out":0},
+        {"first_name":"Sirius","last_name":"Gray","sep_id":10002,"dec":false,"p1":false,"p2":false,"Teacher":"GenEd",
+         "status":"ENR","parents_name":"Sharon Gray","grade":21,"phone":"216-773-0000",
+         "r_in":10,"w_in":10,"r_out":10,"w_out":10}
+    ]
+}

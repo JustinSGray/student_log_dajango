@@ -1,0 +1,5 @@
+[
+  {"id":1,"name":"Class 1", "date":"01/11/2012", "active": true},
+  {"id":2,"name":"Class 2", "date":"01/12/2012", "active": true},    
+  {"id":3,"name":"Class 3", "date":"01/11/2012", "active": false}
+]
