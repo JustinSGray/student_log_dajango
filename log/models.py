@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch.dispatcher import receiver
 
 # Create your models here.
 
@@ -27,9 +28,9 @@ class Klass(models.Model):
     active = models.BooleanField(default=False)
     date = models.DateField()   
 
-    students = models.ManyToManyField('Student', related_name="klasses", through='KlassStudent',blank=True,null=True)
+    students = models.ManyToManyField('Student', related_name="klasses", through='Interaction',blank=True,null=True)
 
-class KlassStudent(models.Model):
+class Interaction(models.Model):
     q1 = models.BooleanField(default=False)
     q2 = models.BooleanField(default=False)
     teacher  = models.CharField(max_length=10)
@@ -38,7 +39,14 @@ class KlassStudent(models.Model):
     student = models.ForeignKey('Student')
     klass = models.ForeignKey('Klass')    
 
-    records = models.ManyToManyField("Record", related_name="klass_students")
+    records = models.ManyToManyField("Record", related_name="interactions")
+
+@receiver(models.signals.pre_delete, sender=Interaction)
+def _delete_interaction(sender,instance,**kwargs): 
+    for r in instance.records.all(): 
+        if r.interactions.count() == 1: 
+            r.delete()
+
 
 class Record(models.Model): 
     timestamp = models.DateTimeField(auto_now=True)

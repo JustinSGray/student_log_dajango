@@ -26,19 +26,6 @@
     }
 },
 {
-    "model":"log.KlassStudent",
-    "pk":1,
-    "fields":{
-        "q1":true,
-        "q2":false,
-        "teacher":"GenEd",
-        "status":"enr",
-        "student":1,
-        "klass":1
-
-    }    
-},
-{
     "model":"log.Student",
     "pk":1,
     "fields":{
@@ -93,7 +80,20 @@
     }    
 },
 {
-    "model":"log.KlassStudent",
+    "model":"log.Interaction",
+    "pk":1,
+    "fields":{
+        "q1":true,
+        "q2":false,
+        "teacher":"GenEd",
+        "status":"enr",
+        "student":1,
+        "klass":1
+
+    }    
+},
+{
+    "model":"log.Interaction",
     "pk":2,
     "fields":{
         "q1":false,
@@ -107,7 +107,7 @@
     }    
 },
 {
-    "model":"log.KlassStudent",
+    "model":"log.Interaction",
     "pk":3,
     "fields":{
         "q1":false,
