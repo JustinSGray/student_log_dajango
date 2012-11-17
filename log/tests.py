@@ -90,10 +90,6 @@ class ClassTest(ResourceTestCase):
         self.assertHttpAccepted(resp)
         self.assertEqual(Klass.objects.count(),3)  #shoudl not have changed
 
-        resp = self.api_client.get(self.detail_url, format="json")
-
-        mod_data = self.deserialize(resp)
-        self.assertFalse(mod_data['active'])
 
     def test_delete(self):
         self.assertEqual(Klass.objects.count(),3)
@@ -133,10 +129,23 @@ class InteractionTest(ResourceTestCase):
         self.assertEqual(len(data['records']),2)
 
 
-    def test_post(self):
-        pass
-    
     def test_put(self):
+        resp = self.api_client.get(self.detail_url, format="json")
+        orig_data = self.deserialize(resp)
+   
+        new_data = orig_data.copy()
+        new_data['q1'] = False
+        new_data['send_msg'] = True
+
+        #print new_data
+
+        #self.assertEqual(set(new_data.keys()),set(other_data.keys()))
+
+        resp = self.api_client.put(self.detail_url,
+            data=new_data,format="json")
+        self.assertHttpAccepted(resp)
+
+    def test_post(self):
         pass 
 
     def test_delete(self): 
