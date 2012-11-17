@@ -6,6 +6,44 @@ from tastypie.test import ResourceTestCase
 
 from log.models import Klass,Student,Interaction,Record
 
+class RecordTest(ResourceTestCase):
+    fixtures = ["test_data.json",]
+
+    def setUp(self):
+        super(RecordTest,self).setUp()
+        self.q = "/api/v1/records/"
+        self.detail_url = self.q+"1/"
+
+    def test_get(self): 
+        resp = self.api_client.get(self.q, format="json")
+        self.assertValidJSONResponse(resp)
+
+        data = self.deserialize(resp)
+
+        self.assertEqual(data['meta']['total_count'],2)
+
+    def test_post(self): 
+        resp = self.api_client.post(self.q,data={
+            "notes":True,
+            "timestamp":"2012-11-01",
+            "interactions":['/api/v1/interactions/1/',
+                            '/api/v1/interactions/2/']
+            })
+
+        self.assertHttpCreated(resp)
+        self.assertEqual(Record.objects.count(),3)
+
+        resp = self.api_client.get("/api/v1/interactions/2/",format="json")
+        data = self.deserialize(resp)
+
+        self.assertEqual(len(data['records']),3)
+
+        resp = self.api_client.get("/api/v1/interactions/1/",format="json")
+        data = self.deserialize(resp)
+
+        self.assertEqual(len(data['records']),1)
+
+
 
 class ClassTest(ResourceTestCase):
     fixtures = ["test_data.json",]
@@ -41,7 +79,6 @@ class ClassTest(ResourceTestCase):
         self.assertHttpCreated(resp)
         self.assertEqual(Klass.objects.count(),4)
 
-
     def test_put(self):
         resp = self.api_client.get(self.detail_url, format="json")
         orig_data = self.deserialize(resp)
@@ -54,8 +91,8 @@ class ClassTest(ResourceTestCase):
         self.assertEqual(Klass.objects.count(),3)  #shoudl not have changed
 
         resp = self.api_client.get(self.detail_url, format="json")
-        mod_data = self.deserialize(resp)
 
+        mod_data = self.deserialize(resp)
         self.assertFalse(mod_data['active'])
 
     def test_delete(self):

@@ -44,7 +44,7 @@ class Interaction(models.Model):
 @receiver(models.signals.pre_delete, sender=Interaction)
 def _delete_interaction(sender,instance,**kwargs): 
     for r in instance.records.all(): 
-        if r.interactions.count() == 1: 
+        if r.interactions.count() <= 1: 
             r.delete()
 
 
