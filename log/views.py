@@ -15,7 +15,7 @@ class SmallKlassResource(ModelResource):
 #have to do this janky thing to avoid recursion in the Interaction resource, because of through model
 class KlassResource(SmallKlassResource): 
 
-    interactions =  fields.ToManyField("log.views.SmallInteractionResource",
+    interactions =  fields.ToManyField("log.views.InteractionsResource",
         attribute= lambda bundle: Interaction.objects.filter(klass=bundle.obj),
         full=True,
         blank=True,null=True)
@@ -36,9 +36,10 @@ class RecordsResource(ModelResource):
         resource_name = "records"
         authorization = Authorization() 
 
-    interactions = fields.ToManyField("log.views.SmallInteractionResource","interactions")    
+    interactions = fields.ToManyField("log.views.InteractionsResource","interactions")    
 
-class SmallInteractionResource(ModelResource):
+    
+class InteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.all()
         resource_name = 'interactions'
@@ -49,10 +50,8 @@ class SmallInteractionResource(ModelResource):
         q1 = fields.BooleanField(attribute="q1",null=True)
         q2 = fields.BooleanField(attribute="q2",null=True)
 
-        student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
+    student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
 
-class InteractionsResource(SmallInteractionResource):
-    
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
     records = fields.ToManyField("log.views.RecordsResource","records",full=True)
 
