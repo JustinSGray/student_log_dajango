@@ -1,11 +1,23 @@
-from tastypie.resources import ModelResource
-from log.models import Student,Klass,Record,Interaction
+from django.http import HttpResponse,Http404
 
+from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.api import Api
 from tastypie.authorization import Authorization
 
+from log.models import Student,Klass,Record,Interaction
 
+
+
+
+
+def load_roster(request):
+    if request.method == 'POST':
+
+        return HttpResponse(status=201)
+    
+    raise Http404
+    
 class SmallKlassResource(ModelResource):
     class Meta: 
         queryset = Klass.objects.all()
