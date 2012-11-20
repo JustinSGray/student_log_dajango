@@ -38,7 +38,9 @@ class RecordsResource(ModelResource):
         resource_name = "records"
         authorization = Authorization() 
     
+
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
+
     
 class InteractionsResource(ModelResource):
     class Meta:
