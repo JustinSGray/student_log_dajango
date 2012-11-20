@@ -38,9 +38,9 @@ class RecordsResource(ModelResource):
         resource_name = "records"
         authorization = Authorization() 
     
-
+    timestamp = fields.DateTimeField(attribute="timestamp")
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
-
+    students = fields.ToManyField("log.views.StudentsResource","students")
     
 class InteractionsResource(ModelResource):
     class Meta:
