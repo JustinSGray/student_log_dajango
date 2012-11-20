@@ -28,16 +28,17 @@ class StudentsResource(ModelResource):
     class Meta: 
         queryset = Student.objects.all()
         resource_name = "students"
-        authorization = Authorization()      
+        authorization = Authorization()
+
+    records = fields.ToManyField("log.views.RecordsResource","records",full=True)
 
 class RecordsResource(ModelResource):
     class Meta: 
         queryset = Record.objects.all()         
         resource_name = "records"
         authorization = Authorization() 
-
-    interactions = fields.ToManyField("log.views.InteractionsResource","interactions")    
-
+    
+    klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
     
 class InteractionsResource(ModelResource):
     class Meta:
@@ -53,7 +54,12 @@ class InteractionsResource(ModelResource):
     student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
 
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
-    records = fields.ToManyField("log.views.RecordsResource","records",full=True)
+    #records = fields.ToManyField("log.views.RecordsResource",
+    #    attribute = lambda bundle: Record.objects.filter(interactions__student=bundle.obj.student),
+    #    full=True)
+
+    def save_m2m(self,bundle): 
+        pass
 
 
 v1_api = Api(api_name='v1')

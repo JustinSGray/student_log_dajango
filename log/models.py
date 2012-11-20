@@ -39,7 +39,7 @@ class Interaction(models.Model):
     student = models.ForeignKey('Student')
     klass = models.ForeignKey('Klass')
 
-    records = models.ManyToManyField("Record", related_name="interactions")
+    #records = models.ManyToManyField("Record", related_name="interactions")
 
 @receiver(models.signals.pre_delete, sender=Interaction)
 def _delete_interaction(sender,instance,**kwargs): 
@@ -49,6 +49,10 @@ def _delete_interaction(sender,instance,**kwargs):
 
 
 class Record(models.Model): 
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
     notes = models.TextField()
+    
+    students = models.ManyToManyField('Student', related_name="records")
+
+    klass = models.ForeignKey('Klass')
 
