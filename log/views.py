@@ -41,11 +41,13 @@ class SmallKlassResource(ModelResource):
         queryset = Klass.objects.select_related().all()
         resource_name = 'classes'
         authorization = Authorization() 
+        always_return_data = True
+    date = fields.DateField(attribute="date")
 
 #have to do this janky thing to avoid recursion in the Interaction resource, because of through model
 class KlassResource(SmallKlassResource): 
 
-    interactions =  fields.ToManyField("log.views.InteractionsResource",
+    interactions =  fields.ToManyField("log.views.SmallInteractionsResource",
         attribute= 'interactions',
         full=True,
         blank=True,null=True)
@@ -76,7 +78,7 @@ class RecordsResource(ModelResource):
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
     students = fields.ToManyField("log.views.StudentsResource","students")
 
-class SmallInteractionResource(ModelResource): 
+class SmallInteractionsResource(ModelResource): 
     class Meta:
         queryset = Interaction.objects.all()
         resource_name = 'interactions'
