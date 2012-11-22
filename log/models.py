@@ -5,7 +5,7 @@ from django.dispatch.dispatcher import receiver
 
 
 class Student(models.Model):
-    sep_id = models.IntegerField()
+    sep_id = models.IntegerField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dec = models.BooleanField(default=False)
@@ -37,7 +37,7 @@ class Interaction(models.Model):
     status = models.CharField(max_length=10)
 
     student = models.ForeignKey('Student')
-    klass = models.ForeignKey('Klass')
+    klass = models.ForeignKey('Klass',related_name="interactions")
 
     #records = models.ManyToManyField("Record", related_name="interactions")
 

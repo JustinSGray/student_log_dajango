@@ -5,6 +5,6 @@ from django.conf.urls import patterns, include, url
 from log.views import v1_api
 
 urlpatterns = patterns('',
-    url(r'loadroster/$','log.views.load_roster'),
+    url(r'loadroster/(?P<classId>\d+)/$','log.views.load_roster'),
     url(r'^api/',include(v1_api.urls)),
 )

@@ -31,7 +31,6 @@
     "fields":{
         "first_name":"Justin",
         "last_name":"Gray",
-        "sep_id":10001,
         "dec":true,
          "parents_name":"Scott Gray",
          "grade":11,
@@ -49,7 +48,6 @@
     "fields":{
         "first_name":"Sirius",
         "last_name":"Gray",
-        "sep_id":10001,
         "dec":true,
          "parents_name":"Sharon Gray",
          "grade":11,
@@ -67,7 +65,6 @@
     "fields":{
         "first_name":"Eli",
         "last_name":"Gray",
-        "sep_id":10001,
         "dec":true,
          "parents_name":"Justin Gray",
          "grade":11,
@@ -86,7 +83,7 @@
         "q1":true,
         "q2":false,
         "teacher":"GenEd",
-        "status":"enr",
+        "status":"ENR",
         "student":1,
         "klass":1
     }    
@@ -98,7 +95,7 @@
         "q1":false,
         "q2":false,
         "teacher":"DEC",
-        "status":"adm",
+        "status":"ADM",
         "student":2,
         "klass":1
     }    
@@ -110,7 +107,7 @@
         "q1":false,
         "q2":true,
         "teacher":"Lift",
-        "status":"adm",
+        "status":"ADM",
         "student":3,
         "klass":1
 

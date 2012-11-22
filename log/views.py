@@ -1,3 +1,5 @@
+import StringIO
+
 from django.http import HttpResponse,Http404
 
 from tastypie.resources import ModelResource
@@ -6,21 +8,37 @@ from tastypie.api import Api
 from tastypie.authorization import Authorization
 
 from log.models import Student,Klass,Record,Interaction
+from log.roster_parser import parse_roster
 
 
-
-
-
-def load_roster(request):
+def load_roster(request,classId):
     if request.method == 'POST':
+        f = StringIO.StringIO(request.FILES['file'].read())
+        students = parse_roster(f)
+        klass = Klass.objects.get(pk=classId)
+        for row in students: 
+
+            try: 
+                student = Student.objects.get(pk=row['sep_id'])
+            except Student.DoesNotExist: 
+                data = row.copy()
+                del data['status'] #status is for interaction model
+                student = Student(**data)
+                student.save()
+            try:
+                Interaction.objects.get(klass=klass,student=student)
+            except Interaction.DoesNotExist:     
+                inter = Interaction(klass=klass,student=student,
+                    status=row['status'],teacher='GenEd')
+                inter.save()
 
         return HttpResponse(status=201)
     
     raise Http404
-    
+
 class SmallKlassResource(ModelResource):
     class Meta: 
-        queryset = Klass.objects.all()
+        queryset = Klass.objects.select_related().all()
         resource_name = 'classes'
         authorization = Authorization() 
 
@@ -28,7 +46,7 @@ class SmallKlassResource(ModelResource):
 class KlassResource(SmallKlassResource): 
 
     interactions =  fields.ToManyField("log.views.InteractionsResource",
-        attribute= lambda bundle: Interaction.objects.filter(klass=bundle.obj),
+        attribute= 'interactions',
         full=True,
         blank=True,null=True)
     
@@ -36,34 +54,52 @@ class KlassResource(SmallKlassResource):
     def save_m2m(self,bundle): 
         pass
 
-class StudentsResource(ModelResource): 
+
+class SmallStudentsResource(ModelResource): 
     class Meta: 
-        queryset = Student.objects.all()
+        queryset = Student.objects.select_related().all()
         resource_name = "students"
         authorization = Authorization()
 
+class StudentsResource(SmallStudentsResource): 
+
     records = fields.ToManyField("log.views.RecordsResource","records",full=True)
+
 
 class RecordsResource(ModelResource):
     class Meta: 
-        queryset = Record.objects.all()         
+        queryset = Record.objects.select_related('klass').all()
         resource_name = "records"
         authorization = Authorization() 
     
     timestamp = fields.DateTimeField(attribute="timestamp")
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
     students = fields.ToManyField("log.views.StudentsResource","students")
-    
-class InteractionsResource(ModelResource):
+
+class SmallInteractionResource(ModelResource): 
     class Meta:
         queryset = Interaction.objects.all()
         resource_name = 'interactions'
-        authorization= Authorization()       
+        authorization= Authorization()
 
-        status = fields.CharField(attribute="status",null=True)
-        teacher = fields.CharField(attribute="teacher",null=True)
-        q1 = fields.BooleanField(attribute="q1",null=True)
-        q2 = fields.BooleanField(attribute="q2",null=True)
+    status = fields.CharField(attribute="status",null=True)
+    teacher = fields.CharField(attribute="teacher",null=True)
+    q1 = fields.BooleanField(attribute="q1",null=True)
+    q2 = fields.BooleanField(attribute="q2",null=True)
+
+    student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True) 
+
+    
+class InteractionsResource(ModelResource):
+    class Meta:
+        queryset = Interaction.objects.select_related().all()
+        resource_name = 'interactions'
+        authorization= Authorization()
+
+    status = fields.CharField(attribute="status",null=True)
+    teacher = fields.CharField(attribute="teacher",null=True)
+    q1 = fields.BooleanField(attribute="q1",null=True)
+    q2 = fields.BooleanField(attribute="q2",null=True)
 
     student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
 
