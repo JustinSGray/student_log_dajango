@@ -36,7 +36,7 @@ class Interaction(models.Model):
     teacher  = models.CharField(max_length=10)
     status = models.CharField(max_length=10)
 
-    student = models.ForeignKey('Student')
+    student = models.ForeignKey('Student',related_name="+")
     klass = models.ForeignKey('Klass',related_name="interactions")
 
     #records = models.ManyToManyField("Record", related_name="interactions")

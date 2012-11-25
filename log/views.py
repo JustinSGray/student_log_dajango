@@ -1,11 +1,14 @@
 import StringIO
 
 from django.http import HttpResponse,Http404
+from django.conf.urls.defaults import url
+from django.db.models import Q
 
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.api import Api
 from tastypie.authorization import Authorization
+from tastypie.utils import trailing_slash
 
 from log.models import Student,Klass,Record,Interaction
 from log.roster_parser import parse_roster
@@ -64,6 +67,36 @@ class SmallStudentsResource(ModelResource):
         authorization = Authorization()
 
 class StudentsResource(SmallStudentsResource): 
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
+        ]
+
+    def get_search(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])    
+        
+        q = request.GET.get('q','')
+
+        students = Student.objects.filter(Q(first_name__contains=q)|
+        Q(last_name__contains=q)|
+        Q(phone__contains=q)|
+        Q(notes__contains=q)|
+        Q(records__notes__contains=q)).annotate()
+
+        objects = []
+        if students: 
+            for s in students:
+                bundle = self.build_bundle(obj=s, request=request)
+                bundle = self.full_dehydrate(bundle)
+                objects.append(bundle)
+
+            object_list = {
+                'objects': objects,
+            }
+            return self.create_response(request, object_list)
+        else: 
+            raise Http404("Sorry, no results on that page.")
 
     records = fields.ToManyField("log.views.RecordsResource","records",full=True)
 
