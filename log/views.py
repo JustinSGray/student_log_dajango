@@ -1,8 +1,10 @@
 import StringIO
+import json 
 
 from django.http import HttpResponse,Http404
 from django.conf.urls.defaults import url
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 from tastypie.resources import ModelResource
 from tastypie import fields
@@ -13,11 +15,19 @@ from tastypie.utils import trailing_slash
 from log.models import Student,Klass,Record,Interaction
 from log.roster_parser import parse_roster
 
-
+#@csrf_exempt
 def load_roster(request,classId):
     if request.method == 'POST':
         f = StringIO.StringIO(request.FILES['file'].read())
-        students = parse_roster(f)
+        try: 
+            students = parse_roster(f)
+        except KeyError as err: 
+            err_msg = 'The csv file did not have a "%s" column.'%str(err.args[0])
+
+            return HttpResponse(content=json.dumps({'msg':err_msg}), 
+                                mimetype="application/json",
+                                status=415)
+
         klass = Klass.objects.get(pk=classId)
         for row in students: 
 
@@ -35,7 +45,10 @@ def load_roster(request,classId):
                     status=row['status'],teacher='GenEd')
                 inter.save()
 
-        return HttpResponse(status=201)
+        msg = "Roster Uploaded Successfully"
+        return HttpResponse(content=json.dumps({'msg':msg}),
+                            mimetype="/application/json",
+                            status=201)
     
     raise Http404
 
@@ -50,7 +63,7 @@ class SmallKlassResource(ModelResource):
 #have to do this janky thing to avoid recursion in the Interaction resource, because of through model
 class KlassResource(SmallKlassResource): 
 
-    interactions =  fields.ToManyField("log.views.SmallInteractionsResource",
+    interactions =  fields.ToManyField("log.views.InteractionsResource",
         attribute= 'interactions',
         full=True,
         blank=True,null=True)
@@ -78,7 +91,7 @@ class StudentsResource(SmallStudentsResource):
         
         q = request.GET.get('q','')
 
-        students = Student.objects.filter(Q(first_name__contains=q)|
+        students = Student.objects.select_related().filter(Q(first_name__contains=q)|
         Q(last_name__contains=q)|
         Q(phone__contains=q)|
         Q(notes__contains=q)|
@@ -99,7 +112,7 @@ class StudentsResource(SmallStudentsResource):
             raise Http404("Sorry, no results on that page.")
 
     records = fields.ToManyField("log.views.RecordsResource","records",full=True)
-
+    interactions = fields.ToManyField("log.views.SmallInteractionsResource","interactions",full=True,null=True,blank=True)
 
 class RecordsResource(ModelResource):
     class Meta: 
@@ -124,24 +137,24 @@ class SmallInteractionsResource(ModelResource):
 
     student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True) 
 
-    
-class InteractionsResource(ModelResource):
+
+class SmallInteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
         authorization= Authorization()
 
+    klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
+
+    
+class InteractionsResource(SmallInteractionsResource):
     status = fields.CharField(attribute="status",null=True)
     teacher = fields.CharField(attribute="teacher",null=True)
     q1 = fields.BooleanField(attribute="q1",null=True)
     q2 = fields.BooleanField(attribute="q2",null=True)
 
-    student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
+    student =  fields.ToOneField("log.views.StudentsResource","student",full=True,related_name="interactions") 
 
-    klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
-    #records = fields.ToManyField("log.views.RecordsResource",
-    #    attribute = lambda bundle: Record.objects.filter(interactions__student=bundle.obj.student),
-    #    full=True)
 
     def save_m2m(self,bundle): 
         pass

@@ -31,12 +31,15 @@ class Klass(models.Model):
     students = models.ManyToManyField('Student', related_name="klasses", through='Interaction',blank=True,null=True)
 
 class Interaction(models.Model):
+    class Meta: 
+        ordering = ["klass__date"]
+
     q1 = models.BooleanField(default=False)
     q2 = models.BooleanField(default=False)
     teacher  = models.CharField(max_length=10)
     status = models.CharField(max_length=10)
 
-    student = models.ForeignKey('Student',related_name="+")
+    student = models.ForeignKey('Student',related_name="interactions")
     klass = models.ForeignKey('Klass',related_name="interactions")
 
     #records = models.ManyToManyField("Record", related_name="interactions")
