@@ -5,12 +5,15 @@ from django.dispatch.dispatcher import receiver
 
 
 class Student(models.Model):
+    class Meta: 
+        ordering = ["last_name","first_name"]
+
     sep_id = models.IntegerField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dec = models.BooleanField(default=False)
     parents_name = models.CharField(max_length=60)
-    parents_email = models.EmailField(max_length=254)
+    parents_email = models.EmailField(max_length=254,null=True,blank=True)
     grade = models.IntegerField()
     phone = models.CharField(max_length=20)
     r_score_in = models.CharField(max_length=6,blank=True,null=True)
@@ -28,7 +31,7 @@ class Klass(models.Model):
     active = models.BooleanField(default=False)
     date = models.DateField()   
 
-    students = models.ManyToManyField('Student', related_name="klasses", through='Interaction',blank=True,null=True)
+    #students = models.ManyToManyField('Student', related_name="klasses", through='Interaction',blank=True,null=True)
 
 class Interaction(models.Model):
     class Meta: 

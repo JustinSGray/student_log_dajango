@@ -1,4 +1,4 @@
 rm -rf development.db
 python manage.py syncdb --noinput
-python manage.py loaddata log/fixtures/test_data.json
+#python manage.py loaddata log/fixtures/test_data.json
 

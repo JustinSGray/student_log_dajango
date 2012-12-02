@@ -54,23 +54,30 @@ def load_roster(request,classId):
 
 class SmallKlassResource(ModelResource):
     class Meta: 
-        queryset = Klass.objects.select_related().all()
+        queryset = Klass.objects.all()
         resource_name = 'classes'
         authorization = Authorization() 
         always_return_data = True
     date = fields.DateField(attribute="date")
 
-#have to do this janky thing to avoid recursion in the Interaction resource, because of through model
-class KlassResource(SmallKlassResource): 
+    def save_m2m(self,bundle): 
+        pass
 
-    interactions =  fields.ToManyField("log.views.InteractionsResource",
+#have to do this janky thing to avoid recursion in the Interaction resource, because of through model
+class KlassResource(ModelResource): 
+
+    class Meta: 
+        queryset = Klass.objects.select_related().all()
+        resource_name = "classes_with_interactions"
+        authorization = Authorization() 
+        always_return_data = True
+    
+    date = fields.DateField(attribute="date")
+    interactions =  fields.ToManyField("log.views.MediumInteractionsResource",
         attribute= 'interactions',
         full=True,
         blank=True,null=True)
-    
-    #block the definition of students during put and post
-    def save_m2m(self,bundle): 
-        pass
+
 
 
 class SmallStudentsResource(ModelResource): 
@@ -78,6 +85,9 @@ class SmallStudentsResource(ModelResource):
         queryset = Student.objects.select_related().all()
         resource_name = "students"
         authorization = Authorization()
+
+    records = fields.ToManyField("log.views.RecordsResource","records",full=False,null=True,blank=True)
+    
 
 class StudentsResource(SmallStudentsResource): 
 
@@ -91,7 +101,7 @@ class StudentsResource(SmallStudentsResource):
         
         q = request.GET.get('q','')
 
-        students = Student.objects.select_related().filter(Q(first_name__contains=q)|
+        students = Student.objects.select_related('interactions__klass').filter(Q(first_name__contains=q)|
         Q(last_name__contains=q)|
         Q(phone__contains=q)|
         Q(notes__contains=q)|
@@ -111,8 +121,9 @@ class StudentsResource(SmallStudentsResource):
         else: 
             raise Http404("Sorry, no results on that page.")
 
-    records = fields.ToManyField("log.views.RecordsResource","records",full=True)
+    records = fields.ToManyField("log.views.RecordsResource","records",full=True,null=True,blank=True)
     interactions = fields.ToManyField("log.views.SmallInteractionsResource","interactions",full=True,null=True,blank=True)
+
 
 class RecordsResource(ModelResource):
     class Meta: 
@@ -124,18 +135,6 @@ class RecordsResource(ModelResource):
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
     students = fields.ToManyField("log.views.StudentsResource","students")
 
-class SmallInteractionsResource(ModelResource): 
-    class Meta:
-        queryset = Interaction.objects.all()
-        resource_name = 'interactions'
-        authorization= Authorization()
-
-    status = fields.CharField(attribute="status",null=True)
-    teacher = fields.CharField(attribute="teacher",null=True)
-    q1 = fields.BooleanField(attribute="q1",null=True)
-    q2 = fields.BooleanField(attribute="q2",null=True)
-
-    student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True) 
 
 
 class SmallInteractionsResource(ModelResource):
@@ -143,8 +142,18 @@ class SmallInteractionsResource(ModelResource):
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
         authorization= Authorization()
-
+    student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=False)
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
+
+
+class MediumInteractionsResource(ModelResource):
+    class Meta:
+        queryset = Interaction.objects.select_related().all()
+        resource_name = 'interactions'
+        authorization= Authorization()
+    student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True,null=True,blank=True)
+    klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True,null=True,blank=True)    
+
 
     
 class InteractionsResource(SmallInteractionsResource):
@@ -153,15 +162,14 @@ class InteractionsResource(SmallInteractionsResource):
     q1 = fields.BooleanField(attribute="q1",null=True)
     q2 = fields.BooleanField(attribute="q2",null=True)
 
-    student =  fields.ToOneField("log.views.StudentsResource","student",full=True,related_name="interactions") 
+    student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
+    klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
 
-
-    def save_m2m(self,bundle): 
-        pass
 
 
 v1_api = Api(api_name='v1')
+v1_api.register(SmallKlassResource())
 v1_api.register(KlassResource())
-v1_api.register(InteractionsResource())
+v1_api.register(MediumInteractionsResource())
 v1_api.register(StudentsResource())
 v1_api.register(RecordsResource())
