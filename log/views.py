@@ -85,8 +85,9 @@ class SmallStudentsResource(ModelResource):
         queryset = Student.objects.select_related().all()
         resource_name = "students"
         authorization = Authorization()
+        excludes = ['records']
 
-    records = fields.ToManyField("log.views.RecordsResource","records",full=False,null=True,blank=True)
+    #records = fields.ToManyField("log.views.RecordsResource","records",full=False,null=True,blank=True)
     
 
 class StudentsResource(SmallStudentsResource): 
@@ -123,7 +124,9 @@ class StudentsResource(SmallStudentsResource):
 
     records = fields.ToManyField("log.views.RecordsResource","records",full=True,null=True,blank=True)
     interactions = fields.ToManyField("log.views.SmallInteractionsResource","interactions",full=True,null=True,blank=True)
-
+    
+    def save_m2m(self,bundle): 
+        pass
 
 class RecordsResource(ModelResource):
     class Meta: 
@@ -155,15 +158,6 @@ class MediumInteractionsResource(ModelResource):
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True,null=True,blank=True)    
 
 
-    
-class InteractionsResource(SmallInteractionsResource):
-    status = fields.CharField(attribute="status",null=True)
-    teacher = fields.CharField(attribute="teacher",null=True)
-    q1 = fields.BooleanField(attribute="q1",null=True)
-    q2 = fields.BooleanField(attribute="q2",null=True)
-
-    student =  fields.ToOneField("log.views.StudentsResource","student",full=True) 
-    klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
 
 
 
