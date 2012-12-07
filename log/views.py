@@ -4,7 +4,16 @@ import json
 from django.http import HttpResponse,Http404
 from django.conf.urls.defaults import url
 from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import login as django_login
+
+from django.middleware.csrf import get_token
+from django.shortcuts import render_to_response
+
+
 
 from tastypie.resources import ModelResource
 from tastypie import fields
@@ -14,6 +23,49 @@ from tastypie.utils import trailing_slash
 
 from log.models import Student,Klass,Record,Interaction
 from log.roster_parser import parse_roster
+
+from django.core.context_processors import csrf
+
+def user_login_test(request,*args,**kwargs):
+    request.session['something']
+    if request.method == 'POST':
+        state = "Please log in below..."
+        status = 401
+
+        if not request.POST.get('remember_me', None): 
+            request.session.set_expiry(0)    
+               
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                state = "You're successfully logged in!"
+
+                status = 200
+            else:
+                state = "Your account is not active, please contact the site admin."
+        else:
+            state = "Your username and/or password were incorrect."
+        
+        return HttpResponse(content=json.dumps({'msg':state}),
+                    mimetype="application/json",
+                    status=status)
+        
+def user_login(request,*args,**kwargs):
+    if request.method == 'POST':
+        if not request.POST.get('remember_me', None): 
+            request.session.set_expiry(0)    
+               
+        return django_login(request)
+    else: 
+        return render_to_response('log/index.html')    
+
+def user_logout(request): 
+    logout(request)
+    return HttpResponse(status=200)
 
 #@csrf_exempt
 def load_roster(request,classId):
@@ -47,7 +99,7 @@ def load_roster(request,classId):
 
         msg = "Roster Uploaded Successfully"
         return HttpResponse(content=json.dumps({'msg':msg}),
-                            mimetype="/application/json",
+                            mimetype="application/json",
                             status=201)
     
     raise Http404
