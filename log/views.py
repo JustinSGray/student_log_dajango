@@ -6,68 +6,53 @@ from django.conf.urls.defaults import url
 from django.db.models import Q
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import login as django_login
+from django.views.decorators.csrf import csrf_protect,csrf_exempt, ensure_csrf_cookie
+#from django.contrib.auth import authenticate, login as django_login, logout
+from django.contrib.auth.views import login as django_login, logout
 
 from django.middleware.csrf import get_token
-from django.shortcuts import render_to_response
-
-
+from django.shortcuts import render_to_response,redirect
+from django.template import RequestContext
 
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.api import Api
-from tastypie.authorization import Authorization
+from tastypie.authorization import DjangoAuthorization
+from tastypie.authentication import SessionAuthentication
 from tastypie.utils import trailing_slash
+
+from django.conf import settings
+
 
 from log.models import Student,Klass,Record,Interaction
 from log.roster_parser import parse_roster
+from log.forms import AuthenticationForm
 
-from django.core.context_processors import csrf
 
-def user_login_test(request,*args,**kwargs):
-    request.session['something']
-    if request.method == 'POST':
-        state = "Please log in below..."
-        status = 401
 
-        if not request.POST.get('remember_me', None): 
-            request.session.set_expiry(0)    
-               
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+STATIC_ROOT = settings.STATIC_URL + 'student_log/app/index.html'
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                state = "You're successfully logged in!"
-
-                status = 200
-            else:
-                state = "Your account is not active, please contact the site admin."
-        else:
-            state = "Your username and/or password were incorrect."
-        
-        return HttpResponse(content=json.dumps({'msg':state}),
-                    mimetype="application/json",
-                    status=status)
-        
-def user_login(request,*args,**kwargs):
-    if request.method == 'POST':
-        if not request.POST.get('remember_me', None): 
-            request.session.set_expiry(0)    
-               
-        return django_login(request)
+def root(request): 
+    if request.user.is_authenticated():
+        return redirect(STATIC_ROOT)
     else: 
-        return render_to_response('log/index.html')    
+        return redirect(login_user)
 
-def user_logout(request): 
+def login_user(request):
+    if request.method == 'POST':
+        if not request.POST.get('remember_me', None): 
+            request.session.set_expiry(0)    
+               
+    return django_login(request,
+        template_name="log/login.html",
+        authentication_form=AuthenticationForm)
+   
+
+def logout_user(request): 
     logout(request)
-    return HttpResponse(status=200)
+    return redirect(login_user)
+    
 
-#@csrf_exempt
 def load_roster(request,classId):
     if request.method == 'POST':
         f = StringIO.StringIO(request.FILES['file'].read())
@@ -104,11 +89,15 @@ def load_roster(request,classId):
     
     raise Http404
 
+
+#Start of the JSON API    
+
 class SmallKlassResource(ModelResource):
     class Meta: 
         queryset = Klass.objects.all()
         resource_name = 'classes'
-        authorization = Authorization() 
+        authorization = DjangoAuthorization() 
+        authentication = SessionAuthentication()
         always_return_data = True
     date = fields.DateField(attribute="date")
 
@@ -121,7 +110,8 @@ class KlassResource(ModelResource):
     class Meta: 
         queryset = Klass.objects.select_related().all()
         resource_name = "classes_with_interactions"
-        authorization = Authorization() 
+        authorization = DjangoAuthorization() 
+        authentication = SessionAuthentication()
         always_return_data = True
     
     date = fields.DateField(attribute="date")
@@ -136,7 +126,7 @@ class SmallStudentsResource(ModelResource):
     class Meta: 
         queryset = Student.objects.select_related().all()
         resource_name = "students"
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         excludes = ['records']
 
     #records = fields.ToManyField("log.views.RecordsResource","records",full=False,null=True,blank=True)
@@ -184,7 +174,7 @@ class RecordsResource(ModelResource):
     class Meta: 
         queryset = Record.objects.select_related('klass').all()
         resource_name = "records"
-        authorization = Authorization() 
+        authorization = DjangoAuthorization() 
     
     timestamp = fields.DateTimeField(attribute="timestamp")
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
@@ -196,7 +186,7 @@ class SmallInteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
-        authorization= Authorization()
+        authorization= DjangoAuthorization()
     student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=False)
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
 
@@ -205,7 +195,7 @@ class MediumInteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
-        authorization= Authorization()
+        authorization= DjangoAuthorization()
     student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True,null=True,blank=True)
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True,null=True,blank=True)    
 

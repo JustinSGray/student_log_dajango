@@ -6,8 +6,9 @@ from log.views import v1_api
 from log.forms import AuthenticationForm
 
 urlpatterns = patterns('',
-    url(r'^login/','log.views.user_login'),
-    url(r'^logout/$','log.views.user_logout'),
+    url(r'^$','log.views.root'),
+    url(r'^login/','log.views.login_user'),
+    url(r'^logout/$','log.views.logout_user'),
     url(r'loadroster/(?P<classId>\d+)/$','log.views.load_roster'),
     url(r'^api/',include(v1_api.urls)),
 )

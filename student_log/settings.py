@@ -122,9 +122,11 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'tastypie',
-    'bootstrap',
+    'crispy_forms',
     'log',
 )
+
+LOGIN_REDIRECT_URL = STATIC_URL+"student_log/app/index.html"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
