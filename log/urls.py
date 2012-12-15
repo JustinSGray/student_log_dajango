@@ -7,8 +7,8 @@ from views import v1_api
 
 urlpatterns = patterns('log',
     url(r'^$','views.root'),
-    url(r'^login/','views.login_user'),
+    url(r'^login/$','views.login_user'),
     url(r'^logout/$','views.logout_user'),
-    url(r'loadroster/(?P<classId>\d+)/$','views.load_roster'),
+    url(r'^loadroster/(?P<classId>\d+)/$','views.load_roster'),
     url(r'^api/',include(v1_api.urls)),
 )
