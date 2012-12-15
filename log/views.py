@@ -1,6 +1,8 @@
 import StringIO
 import json 
 
+
+
 from django.http import HttpResponse,Http404
 from django.conf.urls.defaults import url
 from django.db.models import Q
@@ -17,7 +19,7 @@ from django.template import RequestContext
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.api import Api
-from tastypie.authorization import DjangoAuthorization
+from tastypie.authorization import Authorization
 from tastypie.authentication import SessionAuthentication
 from tastypie.utils import trailing_slash
 
@@ -27,10 +29,14 @@ from django.conf import settings
 from log.models import Student,Klass,Record,Interaction
 from log.roster_parser import parse_roster
 from log.forms import AuthenticationForm
+#from log.authentication import SessionAuthentication
 
 
 
 STATIC_ROOT = settings.STATIC_URL + 'student_log/app/index.html'
+
+
+
 
 def root(request): 
     if request.user.is_authenticated():
@@ -96,7 +102,7 @@ class SmallKlassResource(ModelResource):
     class Meta: 
         queryset = Klass.objects.all()
         resource_name = 'classes'
-        authorization = DjangoAuthorization() 
+        authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
     date = fields.DateField(attribute="date")
@@ -110,7 +116,7 @@ class KlassResource(ModelResource):
     class Meta: 
         queryset = Klass.objects.select_related().all()
         resource_name = "classes_with_interactions"
-        authorization = DjangoAuthorization() 
+        authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
     
@@ -126,7 +132,9 @@ class SmallStudentsResource(ModelResource):
     class Meta: 
         queryset = Student.objects.select_related().all()
         resource_name = "students"
-        authorization = DjangoAuthorization()
+        authorization = Authorization()
+        authentication = SessionAuthentication()
+
         excludes = ['records']
 
     #records = fields.ToManyField("log.views.RecordsResource","records",full=False,null=True,blank=True)
@@ -174,7 +182,9 @@ class RecordsResource(ModelResource):
     class Meta: 
         queryset = Record.objects.select_related('klass').all()
         resource_name = "records"
-        authorization = DjangoAuthorization() 
+        authorization = Authorization() 
+        authentication = SessionAuthentication()
+
     
     timestamp = fields.DateTimeField(attribute="timestamp")
     klass = fields.ToOneField("log.views.SmallKlassResource","klass",full=True)
@@ -186,7 +196,9 @@ class SmallInteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
-        authorization= DjangoAuthorization()
+        authorization= Authorization()
+        authentication = SessionAuthentication()
+
     student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=False)
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True)
 
@@ -195,7 +207,9 @@ class MediumInteractionsResource(ModelResource):
     class Meta:
         queryset = Interaction.objects.select_related().all()
         resource_name = 'interactions'
-        authorization= DjangoAuthorization()
+        authorization= Authorization()
+        authentication = SessionAuthentication()
+
     student =  fields.ToOneField("log.views.SmallStudentsResource","student",full=True,null=True,blank=True)
     klass   =  fields.ToOneField("log.views.SmallKlassResource",'klass',full=True,null=True,blank=True)    
 
