@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Justin', 'Justin.S.Gray@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -156,3 +156,11 @@ LOGGING = {
         },
     }
 }
+
+BASE_URL = ""
+
+#use this for production to override settings
+try: 
+    from settings_local import * 
+except ImportError: 
+    pass    
