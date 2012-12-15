@@ -165,3 +165,9 @@ except ImportError:
 
 
 LOGIN_REDIRECT_URL = STATIC_URL+"student_log/app/index.html"
+
+# End of settings
+_prefix = (FORCE_SCRIPT_NAME or "")
+LOGIN_URL          = _prefix + LOGIN_URL
+LOGIN_REDIRECT_URL = _prefix + LOGIN_REDIRECT_URL
+LOGOUT_URL         = _prefix + LOGOUT_URL
