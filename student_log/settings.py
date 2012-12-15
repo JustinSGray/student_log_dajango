@@ -155,7 +155,7 @@ LOGGING = {
     }
 }
 
-BASE_URL = ""
+FORCE_SCRIPT_NAME = ""
 
 #use this for production to override settings
 try: 
