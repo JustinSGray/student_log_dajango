@@ -120,7 +120,8 @@ class KlassResource(ModelResource):
         authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
-    
+        cache = SimpleCache(timeout=20)
+
     date = fields.DateField(attribute="date")
     interactions =  fields.ToManyField("log.views.MediumInteractionsResource",
         attribute= 'interactions',
