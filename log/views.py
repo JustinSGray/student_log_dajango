@@ -11,10 +11,11 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect,csrf_exempt, ensure_csrf_cookie
 #from django.contrib.auth import authenticate, login as django_login, logout
 from django.contrib.auth.views import login as django_login, logout
-
 from django.middleware.csrf import get_token
 from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
+from django.conf import settings
+
 
 from tastypie.resources import ModelResource
 from tastypie import fields
@@ -22,8 +23,7 @@ from tastypie.api import Api
 from tastypie.authorization import Authorization
 from tastypie.authentication import SessionAuthentication
 from tastypie.utils import trailing_slash
-
-from django.conf import settings
+from tastypie.cache import SimpleCache
 
 
 from log.models import Student,Klass,Record,Interaction
@@ -105,6 +105,7 @@ class SmallKlassResource(ModelResource):
         authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
+        cache = SimpleCache(timeout=20)
     date = fields.DateField(attribute="date")
 
     def save_m2m(self,bundle): 
