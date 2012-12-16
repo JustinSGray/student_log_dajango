@@ -44,9 +44,9 @@ def root(request):
     else: 
         return redirect(login_user)
 
+@csrf_exempt
 def login_user(request):
-    if request.method == 'POST':
-        if not request.POST.get('remember_me', None): 
+    if request.method == 'POST' and (not request.POST.get('remember_me', None)): 
             request.session.set_expiry(0)    
                
     return django_login(request,
