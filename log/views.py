@@ -36,13 +36,12 @@ from log.forms import AuthenticationForm
 STATIC_ROOT = settings.STATIC_URL + 'student_log/app/index.html'
 
 
-
-
 def root(request): 
     if request.user.is_authenticated():
         return redirect(STATIC_ROOT)
     else: 
         return redirect(login_user)
+
 
 @csrf_exempt
 def login_user(request):
@@ -59,7 +58,7 @@ def logout_user(request):
     return redirect(login_user)
     
 
-def load_roster(request,classId):
+def load_roster(request, classId):
     if request.method == 'POST':
         f = StringIO.StringIO(request.FILES['file'].read())
         try: 
@@ -67,13 +66,12 @@ def load_roster(request,classId):
         except KeyError as err: 
             err_msg = 'The csv file did not have a "%s" column.'%str(err.args[0])
 
-            return HttpResponse(content=json.dumps({'msg':err_msg}), 
+            return HttpResponse(content=json.dumps({'msg': err_msg}), 
                                 mimetype="application/json",
                                 status=415)
 
         klass = Klass.objects.get(pk=classId)
         for row in students: 
-
             try: 
                 student = Student.objects.get(pk=row['sep_id'])
             except Student.DoesNotExist: 
@@ -82,14 +80,17 @@ def load_roster(request,classId):
                 student = Student(**data)
                 student.save()
             try:
-                Interaction.objects.get(klass=klass,student=student)
+                inter = Interaction.objects.get(klass=klass, student=student)
+                inter.status = row['status']
+                inter.save()
+
             except Interaction.DoesNotExist:     
-                inter = Interaction(klass=klass,student=student,
-                    status=row['status'],teacher='GenEd')
+                inter = Interaction(klass=klass, student=student,
+                    status=row['status'], teacher='GenEd')
                 inter.save()
 
         msg = "Roster Uploaded Successfully"
-        return HttpResponse(content=json.dumps({'msg':msg}),
+        return HttpResponse(content=json.dumps({'msg': msg}),
                             mimetype="application/json",
                             status=201)
     
@@ -105,7 +106,7 @@ class SmallKlassResource(ModelResource):
         authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
-        cache = SimpleCache(timeout=20)
+        #cache = SimpleCache(timeout=20)
     date = fields.DateField(attribute="date")
 
     def save_m2m(self,bundle): 
@@ -120,7 +121,7 @@ class KlassResource(ModelResource):
         authorization = Authorization() 
         authentication = SessionAuthentication()
         always_return_data = True
-        cache = SimpleCache(timeout=20)
+        #cache = SimpleCache(timeout=20)
 
     date = fields.DateField(attribute="date")
     interactions =  fields.ToManyField("log.views.MediumInteractionsResource",
