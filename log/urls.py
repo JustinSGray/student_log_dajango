@@ -10,5 +10,6 @@ urlpatterns = patterns('log',
     url(r'^login/$','views.login_user'),
     url(r'^logout/$','views.logout_user'),
     url(r'^loadroster/(?P<classId>\d+)/$','views.load_roster'),
+    url(r'^class_log/(?P<classId>\d+)/$','views.download_class_log'),
     url(r'^api/',include(v1_api.urls)),
 )

@@ -1,6 +1,6 @@
 import StringIO
 import json 
-
+import textwrap
 
 
 from django.http import HttpResponse,Http404
@@ -56,7 +56,37 @@ def login_user(request):
 def logout_user(request): 
     logout(request)
     return redirect(login_user)
+
+def download_class_log(request, classId):     
+    klass = Klass.objects.get(pk=classId)
+    log_file = []
+    for inter in klass.interactions.all().iterator(): 
+        s = inter.student
+        line =  "Student: %s %s (%d)"%(s.first_name,
+                                       s.last_name,
+                                       s.sep_id)
+        log_file.append(line)
+
+        for r in s.records.all().iterator(): 
+            line = "    %s %s"%(klass.name,r.timestamp)
+            log_file.append(line)
+            notes = textwrap.wrap(r.notes,70,
+                initial_indent=8*" ", subsequent_indent=8*" ")
+            log_file.extend(notes)
+        log_file.extend(["",""]) #two blank lines
     
+    response = HttpResponse(content_type='text/txt')
+    response['Content-Disposition'] = 'attachment; filename="%s.txt"'%klass.name
+
+    out_file = StringIO.StringIO()
+    out_file.write("\n".join(log_file))
+    out_file.seek(0)
+
+    response = HttpResponse(status=200, 
+                            mimetype="application/x-zip-compressed", 
+                            content=out_file)
+    response['Content-Disposition'] = 'attachment; filename="%s.txt"'%klass.name
+    return response
 
 def load_roster(request, classId):
     if request.method == 'POST':
