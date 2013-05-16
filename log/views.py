@@ -155,15 +155,15 @@ class KlassResource(ModelResource):
 
     date = fields.DateField(attribute="date")
     interactions =  fields.ToManyField("log.views.MediumInteractionsResource",
-        attribute= lambda bundle: Interaction.objects.filter(klass=bundle.obj).select_related(),
+        attribute= 'interactions',
         full=True,
-        blank=True,null=True)
+        blank=True,null=True, readonly=True)
 
 
 
 class SmallStudentsResource(ModelResource): 
     class Meta: 
-        queryset = Student.objects.all()
+        queryset = Student.objects.all().prefetch_related()
         resource_name = "students"
         authorization = Authorization()
         authentication = SessionAuthentication()
@@ -205,8 +205,8 @@ class StudentsResource(SmallStudentsResource):
         else: 
             raise Http404("Sorry, no results on that page.")
 
-    records = fields.ToManyField("log.views.RecordsResource","records",full=True,null=True,blank=True)
-    interactions = fields.ToManyField("log.views.SmallInteractionsResource","interactions",full=True,null=True,blank=True)
+    records = fields.ToManyField("log.views.RecordsResource","records",full=True,null=True,blank=True, readonly=True)
+    interactions = fields.ToManyField("log.views.SmallInteractionsResource","interactions",full=True,null=True,blank=True, readonly=True)
     
     def save_m2m(self,bundle): 
         pass
@@ -227,7 +227,7 @@ class RecordsResource(ModelResource):
 
 class SmallInteractionsResource(ModelResource):
     class Meta:
-        queryset = Interaction.objects.all().prefetch_related()
+        queryset = Interaction.objects.all().select_related()
         resource_name = 'interactions'
         authorization= Authorization()
         authentication = SessionAuthentication()
@@ -238,7 +238,7 @@ class SmallInteractionsResource(ModelResource):
 
 class MediumInteractionsResource(ModelResource):
     class Meta:
-        queryset = Interaction.objects.all().prefetch_related()
+        queryset = Interaction.objects.all().select_related()
         resource_name = 'interactions'
         authorization= Authorization()
         authentication = SessionAuthentication()
