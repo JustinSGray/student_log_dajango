@@ -146,7 +146,7 @@ class SmallKlassResource(ModelResource):
 class KlassResource(ModelResource): 
 
     class Meta: 
-        queryset = Klass.objects.select_related().all()
+        queryset = Klass.objects.all().prefetch_related('interactions')
         resource_name = "classes_with_interactions"
         authorization = Authorization() 
         authentication = SessionAuthentication()
@@ -155,7 +155,7 @@ class KlassResource(ModelResource):
 
     date = fields.DateField(attribute="date")
     interactions =  fields.ToManyField("log.views.MediumInteractionsResource",
-        attribute= 'interactions',
+        attribute= lambda bundle: Interaction.objects.filter(klass=bundle.obj).select_related(),
         full=True,
         blank=True,null=True)
 
@@ -163,7 +163,7 @@ class KlassResource(ModelResource):
 
 class SmallStudentsResource(ModelResource): 
     class Meta: 
-        queryset = Student.objects.select_related().all()
+        queryset = Student.objects.all()
         resource_name = "students"
         authorization = Authorization()
         authentication = SessionAuthentication()
@@ -185,7 +185,7 @@ class StudentsResource(SmallStudentsResource):
         
         q = request.GET.get('q','')
 
-        students = Student.objects.select_related('interactions__klass').filter(Q(first_name__contains=q)|
+        students = Student.objects.prefetch_related().filter(Q(first_name__contains=q)|
         Q(last_name__contains=q)|
         Q(phone__contains=q)|
         Q(notes__contains=q)|
@@ -213,7 +213,7 @@ class StudentsResource(SmallStudentsResource):
 
 class RecordsResource(ModelResource):
     class Meta: 
-        queryset = Record.objects.select_related('klass').all()
+        queryset = Record.objects.all().prefetch_related()
         resource_name = "records"
         authorization = Authorization() 
         authentication = SessionAuthentication()
@@ -227,7 +227,7 @@ class RecordsResource(ModelResource):
 
 class SmallInteractionsResource(ModelResource):
     class Meta:
-        queryset = Interaction.objects.select_related().all()
+        queryset = Interaction.objects.all().prefetch_related()
         resource_name = 'interactions'
         authorization= Authorization()
         authentication = SessionAuthentication()
@@ -238,7 +238,7 @@ class SmallInteractionsResource(ModelResource):
 
 class MediumInteractionsResource(ModelResource):
     class Meta:
-        queryset = Interaction.objects.select_related().all()
+        queryset = Interaction.objects.all().prefetch_related()
         resource_name = 'interactions'
         authorization= Authorization()
         authentication = SessionAuthentication()
